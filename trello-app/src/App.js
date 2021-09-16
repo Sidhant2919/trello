@@ -1,6 +1,5 @@
 import './App.css';
 import React, { useState, useEffect } from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
 import closeIcon from "./assets/close-icon.png"
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -50,8 +49,12 @@ function AddListDialog(props) {
 }
 
 
+
 function App() {
 
+	const DeleteLocalStorage = () => {
+		localStorage.setItem("notesDataLocal", "");
+	}
 	
 	const [open, setOpen] = React.useState(false);
 
@@ -63,6 +66,14 @@ function App() {
 		setOpen(false);
 	}
 	
+	const deleteNote = (e) => {
+		const idToDelete = e.target.value;
+		console.log(e);
+		const filteredNotes = notes.filter((note) => note.id !== idToDelete);
+		setNotes(filteredNotes);
+	};
+
+
 	const [notes, setNotes] = useState([]);
 
 	const addNote = (e) => {
@@ -123,6 +134,7 @@ function App() {
 						<div className="closeButton">
 							<img src={closeIcon} alt="closeIcon" className="closeIconStyle" />
 						</div>
+						<Button value = {note.id} onClick = {(e) => deleteNote(e)}> Delete Card</Button>
 						<Button>Add Card</Button>
 					</div>
 				)}
