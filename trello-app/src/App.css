@@ -1,5 +1,97 @@
 
+.body{
+  padding:20px;
+}
+
+.containerColumn{
+  display:flex;
+}
+
+.addCardIconStyle{
+  margin:auto;
+  margin-top:20px;
+}
+
+
+.cardDescription{
+  font-size:14px;
+}
+
+.listCardContainer{
+  border:1px solid #ebebeb;
+  padding:10px;
+  margin-bottom:10px;
+  margin-top:10px;
+}
+
+
+.titleHeader{
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.listTitle{
+}
+
+.addCardIconStyle{
+  width:25px;
+}
+
+.headerContainer{
+  font-size:30px;
+  background-color:#00C4B6;
+  display:flex;
+  width:100%;
+  height:60px;
+  border-radius:8px;
+  justify-content: center;
+}
+
+.cardContainer{
+  display:flex;
+  flex-direction:row;
+  width:100%;
+  border-radius:8px;
+  
+}
+
+.addListButtonStyle{
+  float:right;
+  background-color: #00C4B6;
+  text-transform: none;
+  width:150px;
+}
+
+.deleteListIcon{
+  width:20px;
+}
+
+.addListButtonContainer{
+  margin-top:20px;
+}
+
+.listStyle{
+  width:15%;
+  margin-right:20px;
+  border-radius:6px;
+  padding:10px;
+  box-shadow: 1px -1px 5px 0px rgba(0,0,0,0.09);
+  -webkit-box-shadow: 1px -1px 5px 0px rgba(0,0,0,0.09);
+  -moz-box-shadow: 1px -1px 5px 0px rgba(0,0,0,0.09);
+}
+
+
 @media only screen and (max-width: 600px) {
+
+  .listStyle{
+    width:95%;
+  }
+
+  .cardContainer{
+    flex-direction:column;
+  }
+
   .example {background: red;}
 }
 
@@ -8,35 +100,11 @@
   .example {background: green;}
 }
 
-/* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {
-  .example {background: blue;}
-} 
+
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
 
-
-  .headerContainer{
-    font-size:30px;
-    background-color:#00C4B6;
-    display:flex;
-    width:100%;
-    height:60px;
-    justify-content: center;
-  }
-
-  .cardContainer{
-    background-color:#00C4B6;
-    display:flex;
-    flex-direction:row;
-    width:25%;
-  }
-
-
-  .closeIconStyle{
-    width:30px;
-  }
-
+  
   
 } 

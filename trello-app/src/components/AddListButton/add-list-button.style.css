@@ -1,0 +1,29 @@
+.addListButtonStyle{
+    float:right;
+    background-color: #00C4B6;
+    text-transform: none;
+    width:150px;
+  }
+  
+  .addListButtonContainer{
+    margin-top:20px;
+  }
+
+  @media only screen and (max-width: 600px) {
+
+  }
+  
+  /* Small devices (portrait tablets and large phones, 600px and up) */
+  @media only screen and (min-width: 600px) {
+    .example {background: green;}
+  }
+  
+  
+  
+  /* Large devices (laptops/desktops, 992px and up) */
+  @media only screen and (min-width: 992px) {
+    
+
+    
+  } 
+  
