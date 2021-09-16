@@ -112,22 +112,21 @@ function App() {
 
 			<AddListDialog addNote = {addNote} open={open} onClose={handleClose} />
 
+			<div className="cardContainer">
 			{
 				notes !== undefined && notes.length > 0 &&
 				notes.map((note) =>
-					<div className="cardContainer" key={note.id}>
+					<div key={note.id} style={{border : "1px solid black"}}>
 						<div>
 							{note.text}
 						</div>
 						<div className="closeButton">
 							<img src={closeIcon} alt="closeIcon" className="closeIconStyle" />
 						</div>
-
 						<Button>Add Card</Button>
 					</div>
-				)
-			}
-
+				)}
+			</div>
 		</div>
 
 
