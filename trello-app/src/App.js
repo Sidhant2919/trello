@@ -66,9 +66,9 @@ function App() {
 		setOpen(false);
 	}
 	
-	const deleteNote = (e) => {
-		const idToDelete = e.target.value;
-		console.log(e);
+	const deleteNote = (idToDelete) => {
+		// const idToDelete = e.path;
+		// console.log(e.nativeEvent);
 		const filteredNotes = notes.filter((note) => note.id !== idToDelete);
 		setNotes(filteredNotes);
 	};
@@ -134,7 +134,7 @@ function App() {
 						<div className="closeButton">
 							<img src={closeIcon} alt="closeIcon" className="closeIconStyle" />
 						</div>
-						<Button value = {note.id} onClick = {(e) => deleteNote(e)}> Delete Card</Button>
+						<Button value = {note.id} onClick = {() => deleteNote(note.id)}> Delete Card</Button>
 						<Button>Add Card</Button>
 					</div>
 				)}
