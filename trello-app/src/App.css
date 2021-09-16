@@ -1,0 +1,42 @@
+
+@media only screen and (max-width: 600px) {
+  .example {background: red;}
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .example {background: green;}
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .example {background: blue;}
+} 
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+
+
+  .headerContainer{
+    font-size:30px;
+    background-color:#00C4B6;
+    display:flex;
+    width:100%;
+    height:60px;
+    justify-content: center;
+  }
+
+  .cardContainer{
+    background-color:#00C4B6;
+    display:flex;
+    flex-direction:row;
+    width:25%;
+  }
+
+
+  .closeIconStyle{
+    width:30px;
+  }
+
+  
+} 
