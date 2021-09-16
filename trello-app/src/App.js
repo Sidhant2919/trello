@@ -1,5 +1,6 @@
 import './App.css';
 import React, { useState, useEffect } from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import closeIcon from "./assets/close-icon.png"
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -81,13 +82,22 @@ function App() {
 
 
 	useEffect(() => {
-		const listNames = localStorage.getItem("notes");
+		const listNames = localStorage.getItem("notesDataLocal");
 		// const savedNotes = JSON.parse(listNames);
-		if (listNames !== null && listNames.length === 0){
+		if (listNames !== null && listNames.length !== 0){
 			const savedListNames = JSON.parse(listNames);
 			setNotes(savedListNames);
+			console.log('saved notes loaded');
 		}
 	}, []);
+
+
+	useEffect(() => {
+		window.onbeforeunload = () => {
+			localStorage.setItem("notesDataLocal", JSON.stringify(notes));
+			console.log('notes updated before closing');
+		}
+	})
 
 	return (
 		<div>
@@ -103,10 +113,10 @@ function App() {
 			<AddListDialog addNote = {addNote} open={open} onClose={handleClose} />
 
 			{
-				notes !== undefined &&
+				notes !== undefined && notes.length > 0 &&
 				notes.map((note) =>
-					<div className="cardContainer">
-						<div key={note.id}>
+					<div className="cardContainer" key={note.id}>
+						<div>
 							{note.text}
 						</div>
 						<div className="closeButton">
