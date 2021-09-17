@@ -12,15 +12,14 @@ import AddCardDialog from './components/AddCardDialog/add-card-dialog';
 import PageHeader from './components/PageHeader/page-header.js';
 import ListCard from './components/ListCard/list-card.js'
 
+import AppDragDropDemo from './sample';
+
 function App() {
 
-	const DeleteLocalStorage = () => {
-		localStorage.setItem("notesDataLocal", "");
-	}
-
 	const [open, setOpen] = React.useState(false);
-
 	const [addCardOpen, addCardSetOpen] = React.useState(false);
+	const [notes, setNotes] = useState([]);
+	const [cards, setCards] = useState([]);
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -51,21 +50,23 @@ function App() {
 		setCards(filteredCards);
 	};
 
-	function allowDrop(ev) {
-		ev.preventDefault();
-	}
+	// function allowDrop(ev) {
+	// 	ev.preventDefault();
+	// }
 
-	function drag(ev) {
-		ev.dataTransfer.setData("text", ev.target.id);
-	}
+	// function drag(ev) {
+	// 	ev.dataTransfer.setData("text", ev.target.id);
+	// }
 
-	function drop(ev) {
-		ev.preventDefault();
-		var data = ev.dataTransfer.getData("text");
-		ev.target.appendChild(document.getElementById(data));
-	}
+	// function drop(ev) {
+	// 	ev.preventDefault();
+	// 	var data = ev.dataTransfer.getData("text");
+	// 	ev.target.appendChild(document.getElementById(data));
+	// }
 
-	const [notes, setNotes] = useState([]);
+
+
+
 
 	//Function to generate random id using math function and storing title attribute for list
 	const addNote = (e) => {
@@ -74,32 +75,38 @@ function App() {
 			id: Math.random().toString(36).substr(2, 9),
 			text: e.target.note.value,
 		};
-		console.log(newNote.id);
+		// console.log(newNote.id);
 		setNotes([...notes, newNote]);
 		e.target.note.value = "";
 	};
 
-
+	
 	useEffect(() => {
-		const listNames = localStorage.getItem("notesDataLocal");
+		const listCards = localStorage.getItem("listCardsDataLocal");
 		// const savedNotes = JSON.parse(listNames);
+		if (listCards !== null && listCards.length !== 0) {
+			const savedListCards = JSON.parse(listCards);
+			// console.log(savedListCards);
+			setCards(savedListCards);
+			// console.log('saved list cards loaded');
+		}
+		const listNames = localStorage.getItem("notesDataLocal");
 		if (listNames !== null && listNames.length !== 0) {
 			const savedListNames = JSON.parse(listNames);
 			setNotes(savedListNames);
-			console.log('saved notes loaded');
+			// console.log('saved notes loaded');
 		}
-	}, []);
+	},[]);
 
-	//loading the items on page load here
+	
 	useEffect(() => {
 		window.onbeforeunload = () => {
+			localStorage.setItem("listCardsDataLocal", JSON.stringify(cards));
+			// console.log('list cards updated before closing');
 			localStorage.setItem("notesDataLocal", JSON.stringify(notes));
-			console.log('notes updated before closing');
+			// console.log('notes updated before closing');
 		}
 	})
-
-
-	const [cards, setCards] = useState([]);
 
 	//generating unique card id using Math function and storing card attributes for cards
 	const addCard = (e) => {
@@ -118,23 +125,6 @@ function App() {
 	};
 
 
-	useEffect(() => {
-		const listCards = localStorage.getItem("listCardsDataLocal");
-		// const savedNotes = JSON.parse(listNames);
-		if (listCards !== null && listCards.length !== 0) {
-			const savedListCards = JSON.parse(listCards);
-			setCards(savedListCards);
-			console.log('saved list cards loaded');
-		}
-	}, []);
-
-	//loading the cards on page load here
-	useEffect(() => {
-		window.onbeforeunload = () => {
-			localStorage.setItem("listCardsDataLocal", JSON.stringify(cards));
-			console.log('list cards updated before closing');
-		}
-	})
 
 	return (
 		<div className="body">
@@ -145,12 +135,12 @@ function App() {
 			<AddCardDialog open={addCardOpen} onClose={handleAddCardClose} />
 
 
-			<div className="cardContainer" >
+			<div className="cardContainer">
 				{
 					// Rendering the lists here using map function
 					notes !== undefined && notes.length > 0 &&
 					notes.map((note) =>
-						<div ondrop="drop(event)" ondragover="allowDrop(event)" className="listStyle" key={note.id} >
+						<div className="listStyle" key={note.id} onDragOver = {e => e.preventDefault()}>
 							<div className="titleHeader">
 								<div>
 									{note.text}
@@ -164,26 +154,27 @@ function App() {
 							{
 								//Mapping cards here using filter based on matching list id and card list id
 								cards !== undefined && cards.length > 0 &&
-								cards.map((card) => {
+								cards.map((card, index) => {
 									if (note.id === card.cardListId) {
-										return <div draggable="true" ondragstart="drag(event)" className="listCardContainer">
-											<div className="titleHeader">
-												<div>
-													<div className="dataHeading">Title</div>
+										return( 
+											<div className="listCardContainer" key = {index} onDragEnd = {() => console.log('dragg end')} onDragStart = {() => console.log('dragg start')} draggable>
+												<div className="titleHeader">
+													<div>
+														<div className="dataHeading">Title</div>
+														<div>{card.cardHeader}</div>
+													</div>
+													<div>
+														<img src={closeIcon} onClick={() => deleteListCard(card.cardId)} alt="closeIcon" className="deleteListIcon" />
+													</div>
+												</div>
+												<ComponentSeperatorLine />
+
+												<div className="cardDescription">
+													<div className="dataHeading">Description</div>
 													<div>{card.cardHeader}</div>
 												</div>
-												<div>
-													<img src={closeIcon} onClick={() => deleteListCard(card.cardId)} alt="closeIcon" className="deleteListIcon" />
-												</div>
 											</div>
-											<ComponentSeperatorLine />
-
-											<div className="cardDescription">
-												<div className="dataHeading">Description</div>
-												<div>{card.cardHeader}</div>
-											</div>
-										</div>
-											;
+										);
 									}
 									return null;
 								}
@@ -197,11 +188,13 @@ function App() {
 									<input type="Submit" />
 								</form>
 
-								<img value={note.id} onClick={handleAddCardOpen} src={addCardIcon} alt="addCardIcon" className="addCardIconStyle" />
+								<img value={note.id} onClick={() => handleAddCardOpen()} src={addCardIcon} alt="addCardIcon" className="addCardIconStyle" />
 							</div>
 						</div>
 					)}
 			</div>
+
+			<AppDragDropDemo/>
 		</div>
 
 
