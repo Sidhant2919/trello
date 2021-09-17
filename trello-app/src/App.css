@@ -12,6 +12,24 @@
   margin-top:20px;
 }
 
+.inputFieldStyle{
+  width:98%;
+  border:1px solid #dbdbdb;
+  height:25px;
+  border-radius: 2px;
+  margin-bottom:10px;
+}
+
+.submitCardButton{
+  width:100%;
+  background-color: #00C4B6;
+  border:none;
+  border-radius: 5px;
+  height:30px;
+  text-transform: none;
+  color:white;
+}
+
 .dataHeading{
   font-size:10px;
   color:#a1a1a1;

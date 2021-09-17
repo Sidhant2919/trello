@@ -1,0 +1,20 @@
+.submitButton{
+    width:100px;
+    background-color: #00C4B6;
+    border:none;
+    border-radius: 5px;
+    height:30px;
+    text-transform: none;
+    margin-top:35px;
+    color:white;
+}
+
+.cancelButton{
+    width:100px;
+    background-color: #fafafa;
+    border:none;
+    border-radius: 5px;
+    height:30px;
+    text-transform: none;
+    margin-top:35px;
+}

@@ -219,19 +219,16 @@ function App() {
 
 							<div className="containerColumn">
 								<form onSubmit={(e) => addCard(e)}>
-									<input type="text" name="cardHeader" />
-									<input type="text" name="cardDescription" />
+									<input className="inputFieldStyle" required type="text" name="cardHeader" />
+									<input className="inputFieldStyle" required type="text" name="cardDescription" />
 									<input type="hidden" name="cardListId" value={note.id} />
-									<input type="Submit" />
+									<input className="submitCardButton" type="Submit" value="Add a Card" />
 								</form>
 
-								<img value={note.id} onClick={() => handleAddCardOpen()} src={addCardIcon} alt="addCardIcon" className="addCardIconStyle" />
 							</div>
 						</div>
 					)}
 			</div>
-
-			<AppDragDropDemo/>
 		</div>
 
 
