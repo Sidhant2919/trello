@@ -109,22 +109,57 @@ function App() {
 	})
 
 	//generating unique card id using Math function and storing card attributes for cards
-	const addCard = (e) => {
+	const addCard = (e, noteId) => {
 		e.preventDefault();
 		const newCard = {
 			cardHeader: e.target.cardHeader.value,
 			cardDescription: e.target.cardDescription.value,
 			cardListId: e.target.cardListId.getAttribute("value"),
-			cardId: Math.random().toString(36).substr(2, 9),
-
+			cardId: Math.random().toString(36).substr(2, 9)
 		};
 		setCards([...cards, newCard]);
+		console.log(cards);
 		e.target.cardHeader.value = "";
 		e.target.cardDescription.value = "";
 
 	};
 
+	const onDragStart = (e, cardId) => {
+		console.log('drag started' + cardId);
+		e.dataTransfer.setData("cardListId", cardId); // this is the card that is being dragged to another board
+	}
 
+	const onDragOver = (e, noteId) => {
+		// console.log('onDragoVer fired');
+		e.preventDefault();
+	}
+
+	// target id is the board to which the card is going
+	const onDrop = (e, targetId) => {
+		// console.log("onDrop : " + cardListId);
+		// console.log(""+e.dataTransfer.getData('cardListId'));
+		// console.log("recievingCardId  "+recievingCardId);
+		// console.log("targetId" + targetId);
+		const recievingCardId = e.dataTransfer.getData("cardListId");
+		for(let i = 0; i < cards.length ; i++){
+			const item = cards[i];
+			if(item.cardId === recievingCardId){
+				item.cardListId = targetId;
+				console.log(item);
+				cards[i] = item;
+				setCards(cards);
+			}
+		}
+
+		let updatedCards = cards.filter((item) => {
+            if (item.cardId === recievingCardId) {
+                item.cardListId = targetId;
+            }
+            return item;
+        });
+
+        setCards([...cards,updatedCards]);
+	}
 
 	return (
 		<div className="body">
@@ -140,7 +175,10 @@ function App() {
 					// Rendering the lists here using map function
 					notes !== undefined && notes.length > 0 &&
 					notes.map((note) =>
-						<div className="listStyle" key={note.id} onDragOver = {e => e.preventDefault()}>
+						<div className="listStyle" id ={note.id} key={note.id} 
+							onDragOver = {e => onDragOver(e)}
+							onDrop = {e => onDrop(e, note.id)}
+						>
 							<div className="titleHeader">
 								<div>
 									{note.text}
@@ -150,14 +188,13 @@ function App() {
 								</div>
 							</div>
 							<ComponentSeperatorLine />
-
 							{
 								//Mapping cards here using filter based on matching list id and card list id
 								cards !== undefined && cards.length > 0 &&
 								cards.map((card, index) => {
 									if (note.id === card.cardListId) {
 										return( 
-											<div className="listCardContainer" key = {index} onDragEnd = {() => console.log('dragg end')} onDragStart = {() => console.log('dragg start')} draggable>
+											<div className="listCardContainer" id= {card.cardListId} key = {index} onDragStart = {(e) => onDragStart(e, card.cardId)} draggable>
 												<div className="titleHeader">
 													<div>
 														<div className="dataHeading">Title</div>
