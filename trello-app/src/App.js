@@ -5,14 +5,9 @@ import Button from '@material-ui/core/Button';
 import AddListButton from './components/AddListButton/add-list-button';
 import ComponentSeperatorLine from './components/ComponentSeperatorLine/component-seperator-line';
 import AddListDialog from './components/AddListDialog/add-list-dialog';
-import addCardIcon from "./assets/add-card-icon.png";
-import DialogTitle from '@material-ui/core/DialogTitle'
-import Dialog from '@material-ui/core/Dialog';
 import AddCardDialog from './components/AddCardDialog/add-card-dialog';
 import PageHeader from './components/PageHeader/page-header.js';
-import ListCard from './components/ListCard/list-card.js'
 
-import AppDragDropDemo from './sample';
 
 function App() {
 
