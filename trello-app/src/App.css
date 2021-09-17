@@ -110,6 +110,15 @@
     flex-direction:column;
   }
 
+  .inputFieldStyle{
+    width:98%;
+    border:1px solid #dbdbdb;
+    height:25px;
+    border-radius: 2px;
+    margin-bottom:10px;
+  }
+  
+
   .example {background: red;}
 }
 
