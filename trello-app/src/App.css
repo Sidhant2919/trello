@@ -12,6 +12,10 @@
   margin-top:20px;
 }
 
+.dataHeading{
+  font-size:10px;
+  color:#a1a1a1;
+}
 
 .cardDescription{
   font-size:14px;
@@ -19,8 +23,9 @@
 
 .listCardContainer{
   border:1px solid #ebebeb;
-  padding:10px;
-  margin-bottom:10px;
+  background-color: #fafafa;
+  padding:15px;
+  margin-bottom:15px;
   margin-top:10px;
 }
 
@@ -38,15 +43,6 @@
   width:25px;
 }
 
-.headerContainer{
-  font-size:30px;
-  background-color:#00C4B6;
-  display:flex;
-  width:100%;
-  height:60px;
-  border-radius:8px;
-  justify-content: center;
-}
 
 .cardContainer{
   display:flex;
@@ -72,7 +68,6 @@
 }
 
 .listStyle{
-  width:15%;
   margin-right:20px;
   border-radius:6px;
   padding:10px;
@@ -86,6 +81,7 @@
 
   .listStyle{
     width:95%;
+    margin-bottom:30px;
   }
 
   .cardContainer{
@@ -98,6 +94,13 @@
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
   .example {background: green;}
+
+  .listStyle{
+    width:50%;
+    margin-bottom:30px;
+    margin-right:5px;
+  }
+
 }
 
 
@@ -105,6 +108,9 @@
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
 
-  
+  .listStyle{
+    width:15%;
+    margin-right:30px;
+  }
   
 } 

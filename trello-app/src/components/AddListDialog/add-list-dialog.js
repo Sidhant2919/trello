@@ -22,13 +22,13 @@ export default function AddListDialog(props) {
 				<DialogContent>
 					<form onSubmit={(e) => props.addNote(e)}>
 						<input type="text" name="note" />
+						<br/>
 						<input type="Submit" />
 					</form>
 
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={handleClose}>Cancel</Button>
-					<Button onClick={handleClose}>Subscribe</Button>
 				</DialogActions>
 			</Dialog>
 		</div>

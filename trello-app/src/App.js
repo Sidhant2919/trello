@@ -9,16 +9,17 @@ import addCardIcon from "./assets/add-card-icon.png";
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Dialog from '@material-ui/core/Dialog';
 import AddCardDialog from './components/AddCardDialog/add-card-dialog';
-
-
+import PageHeader from './components/PageHeader/page-header.js';
+import ListCard from './components/ListCard/list-card.js'
 
 function App() {
 
 	const DeleteLocalStorage = () => {
 		localStorage.setItem("notesDataLocal", "");
 	}
-	
+
 	const [open, setOpen] = React.useState(false);
+
 	const [addCardOpen, addCardSetOpen] = React.useState(false);
 
 	const handleClickOpen = () => {
@@ -37,22 +38,43 @@ function App() {
 		addCardSetOpen(false);
 	}
 
+	// Function to delete list using filter function
 	const deleteNote = (idToDelete) => {
-		// const idToDelete = e.path;
-		// console.log(e.nativeEvent);
 		const filteredNotes = notes.filter((note) => note.id !== idToDelete);
 		setNotes(filteredNotes);
 	};
 
 
+	// Function to delete cards using filter function
+	const deleteListCard = (cardToDelete) => {
+		const filteredCards = cards.filter((card) => card.cardId !== cardToDelete);
+		setCards(filteredCards);
+	};
+
+	function allowDrop(ev) {
+		ev.preventDefault();
+	}
+
+	function drag(ev) {
+		ev.dataTransfer.setData("text", ev.target.id);
+	}
+
+	function drop(ev) {
+		ev.preventDefault();
+		var data = ev.dataTransfer.getData("text");
+		ev.target.appendChild(document.getElementById(data));
+	}
+
 	const [notes, setNotes] = useState([]);
 
+	//Function to generate random id using math function and storing title attribute for list
 	const addNote = (e) => {
 		e.preventDefault();
 		const newNote = {
 			id: Math.random().toString(36).substr(2, 9),
 			text: e.target.note.value,
 		};
+		console.log(newNote.id);
 		setNotes([...notes, newNote]);
 		e.target.note.value = "";
 	};
@@ -68,7 +90,7 @@ function App() {
 		}
 	}, []);
 
-
+	//loading the items on page load here
 	useEffect(() => {
 		window.onbeforeunload = () => {
 			localStorage.setItem("notesDataLocal", JSON.stringify(notes));
@@ -79,16 +101,20 @@ function App() {
 
 	const [cards, setCards] = useState([]);
 
+	//generating unique card id using Math function and storing card attributes for cards
 	const addCard = (e) => {
 		e.preventDefault();
 		const newCard = {
 			cardHeader: e.target.cardHeader.value,
 			cardDescription: e.target.cardDescription.value,
+			cardListId: e.target.cardListId.getAttribute("value"),
 			cardId: Math.random().toString(36).substr(2, 9),
+
 		};
 		setCards([...cards, newCard]);
 		e.target.cardHeader.value = "";
 		e.target.cardDescription.value = "";
+
 	};
 
 
@@ -102,7 +128,7 @@ function App() {
 		}
 	}, []);
 
-
+	//loading the cards on page load here
 	useEffect(() => {
 		window.onbeforeunload = () => {
 			localStorage.setItem("listCardsDataLocal", JSON.stringify(cards));
@@ -112,28 +138,19 @@ function App() {
 
 	return (
 		<div className="body">
-			<div className="headerContainer">
-				Trello Board
-			</div>
-			
+
+			<PageHeader title={"Trello Board"} />
 			<AddListButton handleClickOpen={handleClickOpen} />
-
-			<AddListDialog open={open} onClose={handleClose} addNote={addNote}  />
-			<AddCardDialog open = {addCardOpen} onClose = {handleAddCardClose}/>
-
-
-			<form onSubmit={(e) => addCard(e)}>
-					<input type="text" name="cardHeader" />
-					<input type="text" name="cardDescription" />
-					<input type="Submit" />
-			</form>
+			<AddListDialog open={open} onClose={handleClose} addNote={addNote} />
+			<AddCardDialog open={addCardOpen} onClose={handleAddCardClose} />
 
 
-			<div className="cardContainer">
+			<div className="cardContainer" >
 				{
+					// Rendering the lists here using map function
 					notes !== undefined && notes.length > 0 &&
 					notes.map((note) =>
-						<div className = "listStyle" key={note.id} >
+						<div ondrop="drop(event)" ondragover="allowDrop(event)" className="listStyle" key={note.id} >
 							<div className="titleHeader">
 								<div>
 									{note.text}
@@ -142,28 +159,45 @@ function App() {
 									<img value={note.id} onClick={() => deleteNote(note.id)} src={closeIcon} alt="closeIcon" className="deleteListIcon" />
 								</div>
 							</div>
-							<ComponentSeperatorLine/>
+							<ComponentSeperatorLine />
 
 							{
-							cards !== undefined && cards.length > 0 &&
-							cards.map((card) =>
-								<div className = "listCardContainer">
-									<div className="titleHeader">
-										<div>
-											{card.cardHeader}
-										</div>
-										<div>
-										<img src={closeIcon} alt="closeIcon" className="deleteListIcon" />
-										</div>
-									</div>
-									<div className = "cardDescription">
-									Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-									</div>
-								</div>
-							)}
+								//Mapping cards here using filter based on matching list id and card list id
+								cards !== undefined && cards.length > 0 &&
+								cards.map((card) => {
+									if (note.id === card.cardListId) {
+										return <div draggable="true" ondragstart="drag(event)" className="listCardContainer">
+											<div className="titleHeader">
+												<div>
+													<div className="dataHeading">Title</div>
+													<div>{card.cardHeader}</div>
+												</div>
+												<div>
+													<img src={closeIcon} onClick={() => deleteListCard(card.cardId)} alt="closeIcon" className="deleteListIcon" />
+												</div>
+											</div>
+											<ComponentSeperatorLine />
 
-							<div className = "containerColumn">
-							<img onClick = {handleAddCardOpen} src = {addCardIcon} alt = "addCardIcon" className = "addCardIconStyle"/>
+											<div className="cardDescription">
+												<div className="dataHeading">Description</div>
+												<div>{card.cardHeader}</div>
+											</div>
+										</div>
+											;
+									}
+									return null;
+								}
+								)}
+
+							<div className="containerColumn">
+								<form onSubmit={(e) => addCard(e)}>
+									<input type="text" name="cardHeader" />
+									<input type="text" name="cardDescription" />
+									<input type="hidden" name="cardListId" value={note.id} />
+									<input type="Submit" />
+								</form>
+
+								<img value={note.id} onClick={handleAddCardOpen} src={addCardIcon} alt="addCardIcon" className="addCardIconStyle" />
 							</div>
 						</div>
 					)}
